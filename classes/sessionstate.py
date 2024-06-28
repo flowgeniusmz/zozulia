@@ -4,7 +4,7 @@ import streamlit as st
 class SessionState:
     def __init__(self):
         self.initial_state = dict(st.secrets.sessionstate)
-        self.initial_state['messages'].append({"role": "assistant", "content": "Im your personal finance assistant - do you understand? Does that make sense?"})
+        self.initial_state['messages']=[{"role": "assistant", "content": "Im your personal finance assistant - do you understand? Does that make sense?"}]
 
     def initialize(self):
         # Once initial state is set - this initializes each key/value pair to the session state
