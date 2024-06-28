@@ -4,7 +4,8 @@ import pandas as pd
 from classes import sessionstate as ss
 import time
 
-
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "assistant", "content": "Im your personal finance assistant - do you understand? Does that make sense?"}]
 client = OpenAI(api_key=st.secrets.openai.apikey)
 assistantid = st.secrets.openai.assistantid
 threadid = st.secrets.openai.threadid
