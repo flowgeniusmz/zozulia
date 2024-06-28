@@ -28,16 +28,17 @@ if prompt := st.chat_input(placeholder="Enter your question or request here...")
     promptmessage = client.beta.threads.messages.create(thread_id=threadid, content=prompt, role='user')
     promptmessageid = promptmessage.id
     run = client.beta.threads.runs.create(thread_id=threadid, assistant_id=assistantid)
+    with chatcontainer:
+        status = st.status(label="Running please wait...", expanded=False, state="running")
     while run.status == "in_progress" or run.status == "queued":
-        st.toast("Running please wait...")
-        with chatcontainer:
-            status = st.status(label="Running please wait...", expanded=False, state="running")
         time.sleep(2)
+        st.toast("Running please wait...")
+        status.update(label="Running please wait...", expanded=False, state="running")
         run = client.beta.threads.runs.retrieve(run_id=run.id, thread_id=threadid)
         if run.status == "completed":
             st.toast("Completed!")
-            with chatcontainer:
-                status.update(label="Completed!", expanded=False, state="complete")
+            
+            status.update(label="Completed!", expanded=False, state="complete")
             threadmessages = client.beta.threads.messages.list(thread_id=threadid)
             for tm in threadmessages:
                 if tm.role == "assistant" and tm.run_id == run.id:
